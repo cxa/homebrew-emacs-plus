@@ -1,0 +1,48 @@
+diff --git a/src/nsterm.m b/src/nsterm.m
+index 8328b5e..adc235e 100644
+--- a/src/nsterm.m
++++ b/src/nsterm.m
+@@ -3629,11 +3629,33 @@ larger if there are taller display elements (e.g., characters
+ {
+   NSRect s = r;
+   [col set];
++  CGFloat hthickness_b = hthickness;
++  CGFloat vthickness_r = vthickness;
++
++  int32_t ht = abs((int32_t)hthickness);
++  if (ht > 0xFFFF) {
++    hthickness_b = ht & 0xFFFF;
++    hthickness = ht >> 16 & 0xFFFF;
++    if (hthickness < 0) {
++      hthickness *= -1;
++      hthickness_b *= -1;
++    }
++  }
++
++  int32_t vt = abs((int32_t)vthickness);
++  if (vt > 0xFFFF) {
++    vthickness_r = vt & 0xFFFF;
++    vthickness = vt >> 16 & 0xFFFF;
++    if (vthickness < 0) {
++      vthickness *= -1;
++      vthickness_r *= -1;
++    }
++  }
+ 
+   /* top, bottom */
+   s.size.height = hthickness;
+   NSRectFill (s);
+-  s.origin.y += r.size.height - hthickness;
++  s.origin.y += r.size.height - hthickness_b;
+   NSRectFill (s);
+ 
+   s.size.height = r.size.height;
+@@ -3645,7 +3667,7 @@ larger if there are taller display elements (e.g., characters
+     NSRectFill (s);
+   if (right_p)
+     {
+-      s.origin.x += r.size.width - vthickness;
++      s.origin.x += r.size.width - vthickness_r;
+       NSRectFill (s);
+     }
+ }

@@ -1,5 +1,5 @@
 # Use defined? to avoid redefinition warnings when file is loaded multiple times
-TAP_OWNER = "d12frosted" unless defined?(TAP_OWNER)
+TAP_OWNER = "cxa" unless defined?(TAP_OWNER)
 TAP_REPO = "emacs-plus" unless defined?(TAP_REPO)
 
 class UrlResolver
